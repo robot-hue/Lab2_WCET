@@ -43,3 +43,15 @@ def load_configuration(file_path: str) -> tuple[ProcessorModel, list[Operation]]
         for op in data["operations"]
     ]
     return model, operations
+
+def best_case(op: Operation, model: ProcessorModel) -> int:
+    """Расчет идеального времени выполнения инструкции (без промахов и ошибок)."""
+    return model.base_cost
+
+def worst_case(op: Operation, model: ProcessorModel) -> int:
+    """Расчет максимального времени с учетом штрафов за промахи кэша и ветвления."""
+    return (
+        model.base_cost
+        + op.memory_accesses * model.cache_miss_penalty
+        + op.branches * model.branch_mispredict_penalty
+    )
