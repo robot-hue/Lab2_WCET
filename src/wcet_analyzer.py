@@ -22,7 +22,7 @@ def load_configuration(file_path: str) -> tuple[ProcessorModel, list[Operation]]
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Файл конфигурации не найден: {file_path}")
         
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8-sig") as f:
         data = json.load(f)
         
     proc_data = data["processor"]
