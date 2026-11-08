@@ -82,3 +82,40 @@ def source_breakdown(fragment: list[Operation], model: ProcessorModel) -> dict[s
         "total_memory_accesses": total_mem_accesses,
         "total_branches": total_branches,
     }
+
+def display_results(fragment: list[Operation], model: ProcessorModel) -> None:
+    """Вывод детальной таблицы результатов анализа и проверки временных ограничений."""
+    print("=" * 86)
+    print(" АНАЛИЗ ВРЕМЕНИ ВЫПОЛНЕНИЯ (WCET/BCET): ШАГ ПИД-РЕГУЛЯТОРА С ФИЛЬТРОМ")
+    print("=" * 86)
+    header = (
+        f"{'№':<3} | {'Операция':<33} | {'Тип':<12} | "
+        f"{'Память':<6} | {'Ветвл.':<6} | {'BCET':<6} | {'WCET':<6}"
+    )
+    print(header)
+    print("-" * 86)
+    
+    for i, op in enumerate(fragment, 1):
+        print(
+            f"{i:<3} | {op.name:<33} | {op.op_type:<12} | "
+            f"{op.memory_accesses:<6} | {op.branches:<6} | "
+            f"{best_case(op, model):<6} | {worst_case(op, model):<6}"
+        )
+        
+    total_bcet = bcet(fragment, model)
+    total_wcet = wcet(fragment, model)
+    ratio = nondeterminism_ratio(fragment, model)
+    breakdown = source_breakdown(fragment, model)
+    print("-" * 86)
+    
+    print(f"\n BCET = {total_bcet} тактов | WCET = {total_wcet} тактов | K_нд = {ratio:.2f}")
+    print(
+        f" Вклад памяти: {breakdown['memory_penalty_total']} тактов | "
+        f"Вклад ветвлений: {breakdown['branch_penalty_total']} тактов"
+    )
+    
+    if total_wcet <= model.deadline:
+        print(f"\n [УСПЕХ] Дедлайн {model.deadline} тактов соблюден в худшем случае.")
+    else:
+        print(f"\n [ПРЕДУПРЕЖДЕНИЕ] Дедлайн {model.deadline} тактов нарушен!")
+    print("=" * 86)
