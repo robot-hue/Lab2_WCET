@@ -1,0 +1,94 @@
+﻿{
+  "processor": {
+    "base_cost": 1,
+    "cache_miss_penalty": 20,
+    "branch_mispredict_penalty": 10,
+    "deadline": 180
+  },
+  "operations": [
+    {
+      "name": "Чтение уставки (SP)",
+      "op_type": "MEM_READ",
+      "memory_accesses": 1,
+      "branches": 0
+    },
+    {
+      "name": "Чтение датчика (PV)",
+      "op_type": "MEM_READ",
+      "memory_accesses": 1,
+      "branches": 0
+    },
+    {
+      "name": "Фильтрация шума PV",
+      "op_type": "ALU_SMOOTH",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Вычисление ошибки e(t)",
+      "op_type": "ALU_SUB",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Расчет П-составляющей (Kp*e)",
+      "op_type": "ALU_MUL",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Чтение интегральной суммы",
+      "op_type": "MEM_READ",
+      "memory_accesses": 1,
+      "branches": 0
+    },
+    {
+      "name": "Расчет И-составляющей (Ki*int)",
+      "op_type": "ALU_MAD",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Чтение пред. ошибки e(t-1)",
+      "op_type": "MEM_READ",
+      "memory_accesses": 1,
+      "branches": 0
+    },
+    {
+      "name": "Расчет Д-составляющей (Kd*de)",
+      "op_type": "ALU_MAD",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Суммирование составляющих",
+      "op_type": "ALU_ADD",
+      "memory_accesses": 0,
+      "branches": 0
+    },
+    {
+      "name": "Проверка верхнего предела",
+      "op_type": "BRANCH_COND",
+      "memory_accesses": 0,
+      "branches": 1
+    },
+    {
+      "name": "Проверка нижнего предела",
+      "op_type": "BRANCH_COND",
+      "memory_accesses": 0,
+      "branches": 1
+    },
+    {
+      "name": "Запись выхода на привод",
+      "op_type": "MEM_WRITE",
+      "memory_accesses": 1,
+      "branches": 0
+    },
+    {
+      "name": "Сохранение e(t-1) в память",
+      "op_type": "MEM_WRITE",
+      "memory_accesses": 1,
+      "branches": 0
+    }
+  ]
+}
