@@ -70,3 +70,15 @@ def nondeterminism_ratio(fragment: list[Operation], model: ProcessorModel) -> fl
     if best_time == 0:
         return 0.0
     return wcet(fragment, model) / best_time
+
+def source_breakdown(fragment: list[Operation], model: ProcessorModel) -> dict[str, int]:
+    """Раздельный расчет накладных расходов на кэш-промахи и ошибки предсказателя."""
+    total_mem_accesses = sum(op.memory_accesses for op in fragment)
+    total_branches = sum(op.branches for op in fragment)
+    return {
+        "base_cost_total": len(fragment) * model.base_cost,
+        "memory_penalty_total": total_mem_accesses * model.cache_miss_penalty,
+        "branch_penalty_total": total_branches * model.branch_mispredict_penalty,
+        "total_memory_accesses": total_mem_accesses,
+        "total_branches": total_branches,
+    }
