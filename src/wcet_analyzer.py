@@ -119,3 +119,20 @@ def display_results(fragment: list[Operation], model: ProcessorModel) -> None:
     else:
         print(f"\n [ПРЕДУПРЕЖДЕНИЕ] Дедлайн {model.deadline} тактов нарушен!")
     print("=" * 86)
+
+def main():
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    config_path = os.path.join(base_dir, "data", "pid_config.json")
+    
+    if len(sys.argv) > 1:
+        config_path = sys.argv[1]
+        
+    try:
+        model, fragment = load_configuration(config_path)
+        display_results(fragment, model)
+    except Exception as e:
+        print(f"Ошибка при выполнении программы: {e}", file=sys.stderr)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
