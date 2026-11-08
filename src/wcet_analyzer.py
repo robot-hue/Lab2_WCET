@@ -63,3 +63,10 @@ def bcet(fragment: list[Operation], model: ProcessorModel) -> int:
 def wcet(fragment: list[Operation], model: ProcessorModel) -> int:
     """Вычисление суммарного наихудшего времени выполнения всего блока (WCET)."""
     return sum(worst_case(op, model) for op in fragment)
+
+def nondeterminism_ratio(fragment: list[Operation], model: ProcessorModel) -> float:
+    """Вычисление коэффициента недетерминизма как отношения WCET к BCET."""
+    best_time = bcet(fragment, model)
+    if best_time == 0:
+        return 0.0
+    return wcet(fragment, model) / best_time
