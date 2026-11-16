@@ -18,7 +18,7 @@ class Operation:
     branches: int
 
 def load_configuration(file_path: str) -> tuple[ProcessorModel, list[Operation]]:
-    """Чтение файла конфигурации без магических чисел."""
+    """Чтение файла конфигурации ."""
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Файл конфигурации не найден: {file_path}")
         
